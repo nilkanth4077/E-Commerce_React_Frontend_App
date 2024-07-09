@@ -31,6 +31,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -38,6 +39,39 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+
+    let filterValue = searchParams.getAll(sectionId);
+
+    if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
+      filterValue = filterValue[0].split(",").filter((item) => item !== value);
+
+      if (filterValue.length === 0) {
+        searchParams.delete(sectionId);
+      }
+    } else {
+      filterValue.push(value);
+    }
+
+    if (filterValue.length > 0) {
+      searchParams.set(sectionId, filterValue.join(","));
+    }
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
+
+  const handleRadioFilterChange = (e, sectionId) => {
+    const searchParams = new URLSearchParams(location.search)
+
+    searchParams.set(sectionId, e.target.value)
+
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  }
 
   return (
     <div className="bg-white">
@@ -273,6 +307,9 @@ export default function Product() {
                                     type="checkbox"
                                     defaultChecked={option.checked}
                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    onChange={() =>
+                                      handleFilter(option.value, section.id)
+                                    }
                                   />
                                   <label
                                     htmlFor={`filter-${section.id}-${optionIdx}`}
@@ -334,6 +371,7 @@ export default function Product() {
                                         value={option.value}
                                         control={<Radio />}
                                         label={option.label}
+                                        onChange={(e) => handleRadioFilterChange(e, section.id)}
                                       />
                                     </>
                                   ))}
