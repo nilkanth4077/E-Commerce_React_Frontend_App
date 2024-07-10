@@ -21,151 +21,30 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import "../../../App.css";
-
-const navigation = {
-  categories: [
-    {
-      id: "women",
-      name: "Women",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "/",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
-          imageAlt:
-            "Models sitting back to back, wearing Basic Tee in black and bone.",
-        },
-        {
-          name: "Basic Tees",
-          href: "/",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
-          imageAlt:
-            "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "/" },
-            { name: "Dresses", href: "/" },
-            { name: "Pants", href: "/" },
-            { name: "Denim", href: "/" },
-            { name: "Sweaters", href: "/" },
-            { name: "T-Shirts", href: "/" },
-            { name: "Jackets", href: "/" },
-            { name: "Activewear", href: "/" },
-            { name: "Browse All", href: "/" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "/" },
-            { name: "Wallets", href: "/" },
-            { name: "Bags", href: "/" },
-            { name: "Sunglasses", href: "/" },
-            { name: "Hats", href: "/" },
-            { name: "Belts", href: "/" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "/" },
-            { name: "My Way", href: "/" },
-            { name: "Re-Arranged", href: "/" },
-            { name: "Counterfeit", href: "/" },
-            { name: "Significant Other", href: "/" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "men",
-      name: "Men",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "/",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
-        },
-        {
-          name: "Artwork Tees",
-          href: "/",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
-          imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "/" },
-            { name: "Pants", href: "/" },
-            { name: "Sweaters", href: "/" },
-            { name: "T-Shirts", href: "/" },
-            { name: "Jackets", href: "/" },
-            { name: "Activewear", href: "/" },
-            { name: "Browse All", href: "/" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "/" },
-            { name: "Wallets", href: "/" },
-            { name: "Bags", href: "/" },
-            { name: "Sunglasses", href: "/" },
-            { name: "Hats", href: "/" },
-            { name: "Belts", href: "/" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Re-Arranged", href: "/" },
-            { name: "Counterfeit", href: "/" },
-            { name: "Full Nelson", href: "/" },
-            { name: "My Way", href: "/" },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Company", href: "/" },
-    { name: "Stores", href: "/" },
-  ],
-};
+import { useNavigate } from "react-router-dom";
+import Navdata from "../../../Data/Navdata";
+import { MenuItem } from "@mui/material";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Navigation() {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category, item, section, close) => {
+    navigate(`/${category.id}/${section.id}/${item.name}`);
+    close();
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white mb-10">
       {/* Mobile menu */}
       <Transition show={open}>
         <Dialog className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -206,7 +85,7 @@ export default function Example() {
                 <TabGroup className="mt-2">
                   <div className="border-b border-gray-200">
                     <TabList className="-mb-px flex space-x-8 px-4">
-                      {navigation.categories.map((category) => (
+                      {Navdata.categories.map((category) => (
                         <Tab
                           key={category.name}
                           className={({ selected }) =>
@@ -224,7 +103,7 @@ export default function Example() {
                     </TabList>
                   </div>
                   <TabPanels as={Fragment}>
-                    {navigation.categories.map((category) => (
+                    {Navdata.categories.map((category) => (
                       <TabPanel
                         key={category.name}
                         className="space-y-10 px-4 pb-8 pt-10"
@@ -272,12 +151,24 @@ export default function Example() {
                             >
                               {section.items.map((item) => (
                                 <li key={item.name} className="flow-root">
-                                  <a
+                                  {/* <a
                                     href={item.href}
                                     className="-m-2 block p-2 text-gray-500"
                                   >
                                     {item.name}
-                                  </a>
+                                  </a> */}
+                                  <p
+                                    onClick={() =>
+                                      handleCategoryClick(
+                                        category,
+                                        section,
+                                        item
+                                      )
+                                    }
+                                    className="cursor-pointer hover:text-gray-800"
+                                  >
+                                    {item.name}
+                                  </p>
                                 </li>
                               ))}
                             </ul>
@@ -289,7 +180,7 @@ export default function Example() {
                 </TabGroup>
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  {navigation.pages.map((page) => (
+                  {Navdata.pages.map((page) => (
                     <div key={page.name} className="flow-root">
                       <a
                         href={page.href}
@@ -344,10 +235,7 @@ export default function Example() {
           Get free delivery on orders over $100
         </p>
 
-        <nav
-          aria-label="Top"
-          className="mx-auto px-4 sm:px-6 lg:px-20"
-        >
+        <nav aria-label="Top" className="mx-auto px-4 sm:px-6 lg:px-20">
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               <button
@@ -375,7 +263,7 @@ export default function Example() {
               {/* Flyout menus */}
               <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="flex h-full space-x-8">
-                  {navigation.categories.map((category) => (
+                  {Navdata.categories.map((category) => (
                     <Popover key={category.name} className="flex">
                       {({ open }) => (
                         <>
@@ -482,7 +370,7 @@ export default function Example() {
                     </Popover>
                   ))}
 
-                  {navigation.pages.map((page) => (
+                  {Navdata.pages.map((page) => (
                     <a
                       key={page.name}
                       href={page.href}
@@ -510,24 +398,9 @@ export default function Example() {
                     {dropdownOpen && (
                       <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <div className="py-1">
-                          <a
-                            href="/"
-                            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                          >
-                            Profile
-                          </a>
-                          <a
-                            href="/"
-                            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                          >
-                            My Orders
-                          </a>
-                          <a
-                            href="/"
-                            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                          >
-                            Logout
-                          </a>
+                          <MenuItem>Profile</MenuItem>
+                          <MenuItem onClick={() => navigate("/account/order")}>My Orders</MenuItem>
+                          <MenuItem>Logout</MenuItem>
                         </div>
                       </div>
                     )}
