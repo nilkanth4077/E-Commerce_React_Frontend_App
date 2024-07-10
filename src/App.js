@@ -20,6 +20,8 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/register" element={<HomePage />} />
+            <Route path="/login" element={<HomePage />} />
             <Route path="/:levelOne/:levelTwo/:levelThree" element={<Product />} />
             <Route path="/product/:productId" element={<ProductDetails />} />
             <Route path="/about" element={<About />} />

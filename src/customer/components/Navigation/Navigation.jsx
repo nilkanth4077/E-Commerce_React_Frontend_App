@@ -23,7 +23,8 @@ import {
 import "../../../App.css";
 import { useNavigate } from "react-router-dom";
 import Navdata from "../../../Data/Navdata";
-import { MenuItem } from "@mui/material";
+import { Button, MenuItem } from "@mui/material";
+import AuthModal from "../../Auth/AuthModal";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -31,13 +32,22 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleCategoryClick = (category, item, section, close) => {
-    navigate(`/${category.id}/${section.id}/${item.name}`);
+    navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
   };
+
+  const handleOpen = () => {
+    setOpenAuthModal(true);
+  }
+
+  const handleClose = () => {
+    setOpenAuthModal(false);
+  }
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -384,7 +394,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:ml-8 lg:flex">
-                  <div className="relative">
+                  {false ? (<div className="relative">
                     <button
                       onClick={toggleDropdown}
                       className="flex items-center text-gray-700 hover:text-gray-800 focus:outline-none"
@@ -405,6 +415,10 @@ export default function Navigation() {
                       </div>
                     )}
                   </div>
+                ) : (
+                  <Button className="text-sm font-medium text-gry-700 hover:text-gray-800" onClick={handleOpen}>SignIn</Button>
+                )}
+
                 </div>
 
                 {/* Search */}
@@ -420,7 +434,7 @@ export default function Navigation() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="/" className="group -m-2 flex items-center p-2">
+                  <a href="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
@@ -436,6 +450,8 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 }

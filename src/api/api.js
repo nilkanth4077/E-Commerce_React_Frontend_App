@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const BASE_URL = "http://localhost:8080";
+
 const getAllProducts = () => {
   return axios
-    .get("http://localhost:8080/product/all")
+    .get(`${BASE_URL}/product/all`)
     .then((res) => {
       console.log("Fetched products:", res.data);
       return res.data;
@@ -15,7 +17,7 @@ const getAllProducts = () => {
 
 const getAllCategories = () => {
   return axios
-    .get("http://localhost:8080/category/all")
+    .get(`${BASE_URL}/category/all`)
     .then((res) => {
       console.log("Fetched Categories:", res.data);
       return res.data;
@@ -26,4 +28,4 @@ const getAllCategories = () => {
     });
 };
 
-export { getAllProducts, getAllCategories };
+export { getAllProducts, getAllCategories, BASE_URL };
