@@ -1,457 +1,233 @@
-import { Fragment, useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  ShoppingBagIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import "../../../App.css";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navdata from "../../../Data/Navdata";
-import { Button, MenuItem } from "@mui/material";
-import AuthModal from "../../Auth/AuthModal";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { toast } from "react-toastify";
+import EduForgeLogo from "../../../assets/images/EduForge3.png";
 
 export default function Navigation() {
-  const [open, setOpen] = useState(false);
-  const [openAuthModal, setOpenAuthModal] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleCategoryClick = (category, item, section, close) => {
-    navigate(`/${category.id}/${section.id}/${item.id}`);
-    close();
+  const token = localStorage.getItem("token");
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    if (token) {
+      const fetchUserProfile = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/auth/profile", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data);
+            setLoading(false);
+          } else if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            setUser(null);
+            setLoading(false);
+            navigate("/login");
+          } else {
+            setLoading(false);
+            setUser(null);
+            return (
+              <div>
+                <p>Failed to fetch user profile. Please log in.</p>
+                <button onClick={() => (window.location.href = "/login")}>
+                  Login
+                </button>
+              </div>
+            );
+          }
+        } catch (error) {
+          setError(error.message);
+          setLoading(false);
+        }
+      };
+
+      fetchUserProfile();
+    } else {
+      setLoading(false);
+    }
+  }, [token, navigate]);
+
+  const handleNavigation = (e) => {
+    if (!currentUser) {
+      e.preventDefault();
+      toast.error("Please log in first", { autoClose: 2000 });
+      navigate("/login");
+      return;
+    }
+
+    switch (currentUser.role) {
+      case "USER":
+        // Allow navigation to "My Assessments"
+        break;
+      case "TUTOR":
+        navigate("/tutor_dashboard");
+        break;
+      case "ADMIN":
+        navigate("/admin_dashboard");
+        break;
+      default:
+        e.preventDefault();
+        toast.error("Unauthorized access", { autoClose: 2000 });
+        navigate("/login");
+    }
   };
 
-  const handleOpen = () => {
-    setOpenAuthModal(true);
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  const handleClose = () => {
-    setOpenAuthModal(false);
+  if (error) {
+    return <div>{error}</div>;
   }
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.reload();
   };
 
   return (
-    <div className="bg-white mb-10">
-      {/* Mobile menu */}
-      <Transition show={open}>
-        <Dialog className="relative z-40 lg:hidden" onClose={setOpen}>
-          <TransitionChild
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+    <>
+      <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <a
+            href="https://flowbite.com/"
+            className="flex items-center space-x-3 rtl:space-x-reverse"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </TransitionChild>
-
-          <div className="fixed inset-0 z-40 flex">
-            <TransitionChild
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <DialogPanel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
-                <div className="flex px-4 pb-2 pt-5">
-                  <button
-                    type="button"
-                    className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
-                    onClick={() => setOpen(false)}
+            <img src={EduForgeLogo} className="h-12" alt="Flowbite Logo"></img>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              EduForge
+            </span>
+          </a>
+          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            {user && token ? (
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center text-sm">
+                  {user.firstName ? user.firstName.charAt(0).toUpperCase() : ""}
+                </div>
+                <div className="mx-5">
+                  <a
+                    href="/"
+                    onClick={handleLogout}
+                    className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md px-4 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   >
-                    <span className="absolute -inset-0.5" />
-                    <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
-
-                {/* Links */}
-                <TabGroup className="mt-2">
-                  <div className="border-b border-gray-200">
-                    <TabList className="-mb-px flex space-x-8 px-4">
-                      {Navdata.categories.map((category) => (
-                        <Tab
-                          key={category.name}
-                          className={({ selected }) =>
-                            classNames(
-                              selected
-                                ? "border-indigo-600 text-indigo-600"
-                                : "border-transparent text-gray-900",
-                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium"
-                            )
-                          }
-                        >
-                          {category.name}
-                        </Tab>
-                      ))}
-                    </TabList>
-                  </div>
-                  <TabPanels as={Fragment}>
-                    {Navdata.categories.map((category) => (
-                      <TabPanel
-                        key={category.name}
-                        className="space-y-10 px-4 pb-8 pt-10"
-                      >
-                        <div className="grid grid-cols-2 gap-x-4">
-                          {category.featured.map((item) => (
-                            <div
-                              key={item.name}
-                              className="group relative text-sm"
-                            >
-                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                <img
-                                  src={item.imageSrc}
-                                  alt={item.imageAlt}
-                                  className="object-cover object-center"
-                                />
-                              </div>
-                              <a
-                                href={item.href}
-                                className="mt-6 block font-medium text-gray-900"
-                              >
-                                <span
-                                  className="absolute inset-0 z-10"
-                                  aria-hidden="true"
-                                />
-                                {item.name}
-                              </a>
-                              <p aria-hidden="true" className="mt-1">
-                                Shop now
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                        {category.sections.map((section) => (
-                          <div key={section.name}>
-                            <p
-                              id={`${category.id}-${section.id}-heading-mobile`}
-                              className="font-medium text-gray-900"
-                            >
-                              {section.name}
-                            </p>
-                            <ul
-                              aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
-                              className="mt-6 flex flex-col space-y-6"
-                            >
-                              {section.items.map((item) => (
-                                <li key={item.name} className="flow-root">
-                                  {/* <a
-                                    href={item.href}
-                                    className="-m-2 block p-2 text-gray-500"
-                                  >
-                                    {item.name}
-                                  </a> */}
-                                  <p
-                                    onClick={() =>
-                                      handleCategoryClick(
-                                        category,
-                                        section,
-                                        item
-                                      )
-                                    }
-                                    className="cursor-pointer hover:text-gray-800"
-                                  >
-                                    {item.name}
-                                  </p>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </TabPanel>
-                    ))}
-                  </TabPanels>
-                </TabGroup>
-
-                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  {Navdata.pages.map((page) => (
-                    <div key={page.name} className="flow-root">
-                      <a
-                        href={page.href}
-                        className="-m-2 block p-2 font-medium text-gray-900"
-                      >
-                        {page.name}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a
-                      href="/"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
-                  </div>
-                  <div className="flow-root">
-                    <a
-                      href="/"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </a>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-200 px-4 py-6">
-                  <a href="/" className="-m-2 flex items-center p-2">
-                    <img
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-base font-medium text-gray-900">
-                      CAD
-                    </span>
-                    <span className="sr-only">, change currency</span>
+                    Logout
                   </a>
                 </div>
-              </DialogPanel>
-            </TransitionChild>
-          </div>
-        </Dialog>
-      </Transition>
-
-      <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Get free delivery on orders over $100
-        </p>
-
-        <nav aria-label="Top" className="mx-auto px-4 sm:px-6 lg:px-20">
-          <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center">
-              <button
-                type="button"
-                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
-                onClick={() => setOpen(true)}
+              </div>
+            ) : (
+              <a
+                href="/login"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                <span className="absolute -inset-0.5" />
-                <span className="sr-only">Open menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-              </button>
-
-              {/* Logo */}
-              <div className="ml-4 flex lg:ml-0">
-                <a href="/">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt=""
-                  />
-                </a>
-              </div>
-
-              {/* Flyout menus */}
-              <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
-                <div className="flex h-full space-x-8">
-                  {Navdata.categories.map((category) => (
-                    <Popover key={category.name} className="flex">
-                      {({ open }) => (
-                        <>
-                          <div className="relative flex">
-                            <PopoverButton
-                              className={classNames(
-                                open
-                                  ? "border-indigo-600 text-indigo-600"
-                                  : "border-transparent text-gray-700 hover:text-gray-800",
-                                "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                              )}
-                            >
-                              {category.name}
-                            </PopoverButton>
-                          </div>
-
-                          <Transition
-                            enter="transition ease-out duration-200"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="transition ease-in duration-150"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                          >
-                            <PopoverPanel className="absolute inset-x-0 top-full text-sm text-gray-500 z-50">
-                              {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-                              <div
-                                className="absolute inset-0 top-1/2 bg-white shadow"
-                                aria-hidden="true"
-                              />
-
-                              <div className="relative bg-white">
-                                <div className="mx-auto max-w-7xl px-8">
-                                  <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
-                                    <div className="col-start-2 grid grid-cols-2 gap-x-8">
-                                      {category.featured.map((item) => (
-                                        <div
-                                          key={item.name}
-                                          className="group relative text-base sm:text-sm"
-                                        >
-                                          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                            <img
-                                              src={item.imageSrc}
-                                              alt={item.imageAlt}
-                                              className="object-cover object-center"
-                                            />
-                                          </div>
-                                          <a
-                                            href={item.href}
-                                            className="mt-6 block font-medium text-gray-900"
-                                          >
-                                            <span
-                                              className="absolute inset-0 z-10"
-                                              aria-hidden="true"
-                                            />
-                                            {item.name}
-                                          </a>
-                                          <p
-                                            aria-hidden="true"
-                                            className="mt-1"
-                                          >
-                                            Shop now
-                                          </p>
-                                        </div>
-                                      ))}
-                                    </div>
-                                    <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
-                                      {category.sections.map((section) => (
-                                        <div key={section.name}>
-                                          <p
-                                            id={`${section.name}-heading`}
-                                            className="font-medium text-gray-900"
-                                          >
-                                            {section.name}
-                                          </p>
-                                          <ul
-                                            aria-labelledby={`${section.name}-heading`}
-                                            className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                          >
-                                            {section.items.map((item) => (
-                                              <li
-                                                key={item.name}
-                                                className="flex"
-                                              >
-                                                <a
-                                                  href={item.href}
-                                                  className="hover:text-gray-800"
-                                                >
-                                                  {item.name}
-                                                </a>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </PopoverPanel>
-                          </Transition>
-                        </>
-                      )}
-                    </Popover>
-                  ))}
-
-                  {Navdata.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
-                  ))}
-                </div>
-              </PopoverGroup>
-
-              <div className="ml-auto flex items-center">
-                <div className="hidden lg:ml-8 lg:flex">
-                  {false ? (<div className="relative">
-                    <button
-                      onClick={toggleDropdown}
-                      className="flex items-center text-gray-700 hover:text-gray-800 focus:outline-none"
-                    >
-                      <img
-                        src="https://tailwindui.com/img/flags/flag-canada.svg"
-                        alt=""
-                        className="block h-10 w-10 object-cover rounded-full cursor-pointer"
-                      />
-                    </button>
-                    {dropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                        <div className="py-1">
-                          <MenuItem>Profile</MenuItem>
-                          <MenuItem onClick={() => navigate("/account/order")}>My Orders</MenuItem>
-                          <MenuItem>Logout</MenuItem>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Button className="text-sm font-medium text-gry-700 hover:text-gray-800" onClick={handleOpen}>SignIn</Button>
-                )}
-
-                </div>
-
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <a href="/" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
-
-                {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a href="/cart" className="group -m-2 flex items-center p-2">
-                    <ShoppingBagIcon
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
-                </div>
-              </div>
-            </div>
+                Login
+              </a>
+            )}
+            <button
+              data-collapse-toggle="navbar-sticky"
+              type="button"
+              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              aria-controls="navbar-sticky"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              </svg>
+            </button>
           </div>
-        </nav>
-      </header>
+          <div
+            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            id="navbar-sticky"
+          >
+            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <li>
+                <a
+                  href="/"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  aria-current="page"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/courses"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Courses
+                </a>
+              </li>
+              <li>
+                <a
+                  href={
+                    currentUser
+                      ? currentUser.role === "USER"
+                        ? "/learnings"
+                        : currentUser.role === "TUTOR"
+                          ? "/tutor_dashboard"
+                          : currentUser.role === "ADMIN"
+                            ? "/admin_dashboard"
+                            : "/login"
+                      : "/login"
+                  }
+                  onClick={handleNavigation}
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  {currentUser
+                    ? currentUser.role === "USER"
+                      ? "My Assessments"
+                      : currentUser.role === "TUTOR"
+                        ? "Dashboard"
+                        : currentUser.role === "ADMIN"
+                          ? "Dashboard"
+                          : "My Assessments"
+                    : "My Assessments"}
+                </a>
+              </li>
 
-      <AuthModal handleClose={handleClose} open={openAuthModal} />
-    </div>
+              <li>
+                <a
+                  href="/services"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Services
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </>
   );
 }

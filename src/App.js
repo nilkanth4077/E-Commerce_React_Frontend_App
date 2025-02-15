@@ -1,7 +1,9 @@
 import React from "react";
 import "./App.css";
-import { Footer } from "./customer/components/Footer/Footer";
+import Footer from "./customer/components/Footer/Footer";
 import Navigation from "./customer/components/Navigation/Navigation";
+import Login from "./customer/pages/Login/Login";
+import Register from "./customer/pages/Register/Register";
 import { About } from "./customer/pages/About/About";
 import HomePage from "./customer/pages/HomePage/HomePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -11,6 +13,7 @@ import Cart from "./customer/components/Cart/CartItem";
 import Checkout from "./customer/components/Checkout/Checkout";
 import Order from "./customer/components/Order/Order";
 import OrderDetails from "./customer/components/Order/OrderDetails";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -20,8 +23,8 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/register" element={<HomePage />} />
-            <Route path="/login" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/:levelOne/:levelTwo/:levelThree" element={<Product />} />
             <Route path="/product/:productId" element={<ProductDetails />} />
             <Route path="/about" element={<About />} />
@@ -31,6 +34,7 @@ function App() {
             <Route path="/account/order/:orderId" element={<OrderDetails />} />
             {/* Define other routes that you need*/}
           </Routes>
+          <ToastContainer />
         </main>
         <Footer />
       </div>

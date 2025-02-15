@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../../api/api";
+import { BASE_URL } from "../../Api/Api";
 import {
   GET_USER_FAILURE,
   GET_USER_REQUEST,
