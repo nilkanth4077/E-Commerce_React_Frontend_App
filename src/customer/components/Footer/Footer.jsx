@@ -6,7 +6,7 @@ export default function Footer() {
           <div className="text-center">
             <h3 className="text-3xl mb-3">
               {" "}
-              Learn anytime, anywhere with our LMS app{" "}
+              Shop anytime, from anywhere with our <br></br> E-Commerce app{" "}
             </h3>
             <p> Empowering minds, one course at a time. </p>
             <div className="flex justify-center my-10">

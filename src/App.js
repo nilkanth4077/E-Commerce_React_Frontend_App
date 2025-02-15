@@ -8,6 +8,7 @@ import { About } from "./customer/pages/About/About";
 import HomePage from "./customer/pages/HomePage/HomePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Product from "./customer/components/Product/Product";
+import AdminDashboard from "./admin/AdminDashboard/AdminDashboard";
 import ProductDetails from "./customer/components/ProductDetails/ProductDetails";
 import Cart from "./customer/components/Cart/CartItem";
 import Checkout from "./customer/components/Checkout/Checkout";
@@ -32,6 +33,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/account/order" element={<Order />} />
             <Route path="/account/order/:orderId" element={<OrderDetails />} />
+            <Route path="/admin_dashboard" element={<AdminDashboard />} />
             {/* Define other routes that you need*/}
           </Routes>
           <ToastContainer />

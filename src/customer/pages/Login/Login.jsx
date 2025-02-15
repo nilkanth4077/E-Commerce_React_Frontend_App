@@ -43,7 +43,7 @@ export default function Login() {
                 localStorage.setItem("user", JSON.stringify(data.user)); // Store user details
 
                 const redirectPath =
-                    data.role === "ROLE_ADMIN" ? "/admin_dashboard" : "/";
+                    data.role === "ADMIN" ? "/admin_dashboard" : "/";
                 setTimeout(() => navigate(redirectPath), 2000);
             } else {
                 const data = await response.json();

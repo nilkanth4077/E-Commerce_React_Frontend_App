@@ -2,9 +2,9 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080";
 
-const getAllProducts = () => {
+const getAllProductsWithoutFilter = () => {
   return axios
-    .get(`${BASE_URL}/product/all`)
+    .get(`${BASE_URL}/product/no-filter/all`)
     .then((res) => {
       console.log("Fetched products:", res.data);
       return res.data;
@@ -28,4 +28,4 @@ const getAllCategories = () => {
     });
 };
 
-export { getAllProducts, getAllCategories, BASE_URL };
+export { getAllProductsWithoutFilter, getAllCategories, BASE_URL };
