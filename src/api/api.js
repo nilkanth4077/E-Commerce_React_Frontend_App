@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://e-commerce-backend-springboot.onrender.com";
 
 const getAllProductsWithoutFilter = () => {
   return axios

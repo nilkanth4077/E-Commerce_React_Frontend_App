@@ -16,7 +16,7 @@ export default function Navigation() {
     if (token) {
       const fetchUserProfile = async () => {
         try {
-          const response = await fetch("http://localhost:8080/auth/profile", {
+          const response = await fetch("https://e-commerce-backend-springboot.onrender.com/auth/profile", {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
