@@ -18,7 +18,7 @@ import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <>
-      <h1 className="bg-secondary text-white flex justify-center font-bold py-2">Our website is currently under development. Stay tuned for exciting updates!</h1>
+      <h1 className="bg-secondary text-white flex justify-center font-bold py-2">Our website is under development, but feel free to explore - some sections may be incomplete !!</h1>
       <Router>
         <div className="App">
           <main className="main-content">
