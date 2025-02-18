@@ -1,13 +1,12 @@
 import React from "react";
 import "./App.css";
-import Footer from "./customer/components/Footer/Footer";
-import Navigation from "./customer/components/Navigation/Navigation";
 import Login from "./customer/pages/Login/Login";
 import Register from "./customer/pages/Register/Register";
 import { About } from "./customer/pages/About/About";
+import { Contact } from "./customer/pages/Contact/Contact";
 import HomePage from "./customer/pages/HomePage/HomePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Product from "./customer/components/Product/Product";
+import Products from "./customer/components/Products/Products";
 import AdminDashboard from "./admin/AdminDashboard/AdminDashboard";
 import ProductDetails from "./customer/components/ProductDetails/ProductDetails";
 import Cart from "./customer/components/Cart/CartItem";
@@ -20,15 +19,15 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navigation />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/:levelOne/:levelTwo/:levelThree" element={<Product />} />
+            <Route path="/products" element={<Products />} />
             <Route path="/product/:productId" element={<ProductDetails />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/account/order" element={<Order />} />
@@ -38,7 +37,6 @@ function App() {
           </Routes>
           <ToastContainer />
         </main>
-        <Footer />
       </div>
     </Router>
   );

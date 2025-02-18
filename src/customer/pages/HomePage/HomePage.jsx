@@ -1,8 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import MainCarousel from '../../components/Carousel/MainCarousel'
+import Hero from '../../components/Hero/Hero'
+import Footer from "../../components/Footer/Footer";
+import Navigation from "../../components/Navigation/Navigation";
 import HomeSectionCarousel from '../../components/HomeSectionCarousel/HomeSectionCarousel'
-import Mens_kurta from '../../../Data/Mens_kurta'
 import { getAllProductsWithoutFilter } from '../../../Api/Api'
 
 function HomePage() {
@@ -15,13 +16,12 @@ function HomePage() {
 
     return (
         <>
-            <MainCarousel />
-            <div className='space-y-10 py-20'>
-                <HomeSectionCarousel data={products} sectionName={"Men's Kurta"} />
-                <HomeSectionCarousel data={Mens_kurta} sectionName={"Men's Shoes"} />
-                <HomeSectionCarousel data={Mens_kurta} sectionName={"Women's Saree"} />
-                <HomeSectionCarousel data={Mens_kurta} sectionName={"Women's Dress"} />
+            <Navigation />
+            <Hero />
+            <div>
+                <HomeSectionCarousel data={products} sectionName={"New Products"} />
             </div>
+            <Footer />
         </>
     )
 }
