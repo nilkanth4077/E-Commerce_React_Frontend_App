@@ -55,11 +55,11 @@ const ResponsiveMenu = ({ open }) => {
         >
           <div className="text-xl font-semibold uppercase bg-primary text-white py-10 m-6 rounded-3xl">
             <ul className="flex flex-col items-center gap-10">
-              <li>Home</li>
-              <li>Products</li>
-              <li>My Orders</li>
-              <li>About</li>
-              <li>Contact</li>
+              <li><a href="/">Home</a></li>
+              <li><a href="/products">Products</a></li>
+              <li><a href="/account/order">My Orders</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
               {user ? (
                 <button
                   className="px-6 py-2 bg-white text-red-600 rounded-xl hover:bg-red-700 transition duration-300"

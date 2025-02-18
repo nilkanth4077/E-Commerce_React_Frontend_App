@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import HomeSectionCard from "../HomeSectionCard/HomeSectionCard";
+import ProductCard from "../Products/ProductCard";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 
@@ -59,7 +59,7 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
           <Slider ref={sliderRef} {...settings} className="gap-6">
             {data.slice(0, 8).map((item) => (
               <div key={item.id} className="px-3"> {/* Added spacing */}
-                <HomeSectionCard product={item} className="shadow-md" />
+                <ProductCard product={item} className="shadow-md" />
               </div>
             ))}
           </Slider>
