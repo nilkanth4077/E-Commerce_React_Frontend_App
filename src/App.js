@@ -17,28 +17,31 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/product/:productId" element={<ProductDetails />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/account/order" element={<Order />} />
-            <Route path="/account/order/:orderId" element={<OrderDetails />} />
-            <Route path="/admin_dashboard" element={<AdminDashboard />} />
-            {/* Define other routes that you need*/}
-          </Routes>
-          <ToastContainer />
-        </main>
-      </div>
-    </Router>
+    <>
+      <h1 className="bg-secondary text-white flex justify-center font-bold py-2">Our website is currently under development. Stay tuned for exciting updates!</h1>
+      <Router>
+        <div className="App">
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/product/:productId" element={<ProductDetails />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/account/order" element={<Order />} />
+              <Route path="/account/order/:orderId" element={<OrderDetails />} />
+              <Route path="/admin_dashboard" element={<AdminDashboard />} />
+              {/* Define other routes that you need*/}
+            </Routes>
+            <ToastContainer />
+          </main>
+        </div>
+      </Router>
+    </>
   );
 }
 
