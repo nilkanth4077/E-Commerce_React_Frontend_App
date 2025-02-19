@@ -9,11 +9,11 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="my-8 mx-8 flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden w-full transition-transform duration-300 hover:scale-105">
+    <div className="flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden w-full transition-transform duration-300 hover:scale-105">
       {/* Product Image */}
       <div className="h-[14rem] w-[12rem]">
         <img
-          className="object-cover object-center w-full h-full rounded-t-lg"
+          className="object-fill object-center w-full h-full rounded-t-lg"
           src={product.imageUrl}
           alt={product.title}
         />
@@ -46,8 +46,8 @@ const ProductCard = ({ product }) => {
         )}
 
         {/* Availability */}
-        <p className={`mt-2 text-sm ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+        <p className={`mt-2 text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          {product.quantity > 0 ? 'In Stock' : 'Out of Stock'}
         </p>
 
         {/* Buttons Section */}

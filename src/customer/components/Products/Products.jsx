@@ -41,13 +41,27 @@ function classNames(...classes) {
 
 export default function Products() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllProductsWithoutFilter().then(data => setProducts(data));
+    getAllProductsWithoutFilter()
+      .then(data => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      });
   }, []);
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleFilter = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
@@ -200,7 +214,17 @@ export default function Products() {
 
               <div className="flex items-center">
                 <Menu as="div" className="relative inline-block text-left">
-                  <div>
+                  <div className="flex items-center space-x-4">
+                    {/* Search Input */}
+                    <input
+                      type="text"
+                      placeholder="Search products..."
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+
+                    {/* Sort Button */}
                     <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                       Sort
                       <ChevronDownIcon
@@ -396,15 +420,21 @@ export default function Products() {
                 </>
 
                 {/* Product grid */}
-                <div className="lg:col-span-4 width-full">
-                  <div className="flex flex-wrap justify-center bg-white py-5">
-                    {products.map((item) => (
-                      <div key={item.id}>
-                        <ProductCard product={item} />
-                      </div>
-                    ))}
+                {loading ? (
+                  <div className="flex flex-col items-center justify-center min-h-[300px]">
+                    {/* Spinner */}
+                    <div className="w-12 h-12 border-4 border-gray-300 border-t-primary rounded-full animate-spin"></div>
+                    <p className="mt-3 text-gray-600">Loading products...</p>
                   </div>
-                </div>
+                ) : (
+                  <div className="lg:col-span-4 w-full">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 bg-white py-5">
+                      {filteredProducts.map((item) => (
+                        <ProductCard key={item.id} product={item} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
           </main>
