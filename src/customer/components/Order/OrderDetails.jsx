@@ -4,57 +4,69 @@ import OrderTracker from "./OrderTracker";
 import { Box, Grid } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import Footer from "../../components/Footer/Footer";
+import Navigation from "../../components/Navigation/Navigation";
 
 const OrderDetails = () => {
   return (
-    <div className="px-5 lg:px-20">
-      <div>
-        <h1 className="font-bold text-xl py-10">Delivery Address</h1>
-        <AddressCard />
-      </div>
-      <div className="py-20">
-        <OrderTracker activeStep={3} />
-      </div>
-      <Grid container className="space-y-5">
-        {[1, 1, 1, 1].map((item) => (
-          <Grid
-            item
-            container
-            className="shadow-xl rounded-md p-5"
-            sx={{ alignItems: "center", justifyContent: "space-between" }}
-          >
-            <Grid item xs={6}>
-              <div className="flex items-center space-x-4">
+    <>
+      <Navigation />
+      <div className="px-4 sm:px-6 lg:px-20">
+        {/* Delivery Address Section */}
+        <div>
+          <h1 className="font-bold text-lg sm:text-xl py-6">Delivery Address</h1>
+          <AddressCard />
+        </div>
+
+        {/* Order Tracker */}
+        <div className="py-14 sm:py-20">
+          <OrderTracker activeStep={3} />
+        </div>
+
+        {/* Order Items */}
+        <Grid container spacing={3}>
+          {[1, 1, 1, 1].map((_, index) => (
+            <Grid
+              key={index}
+              item
+              xs={12}
+              md={6}
+              lg={6}
+              className="shadow-lg rounded-md p-5"
+            >
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-4">
+                {/* Product Image */}
                 <img
-                  src="/public/img/k1.png"
-                  alt=""
-                  className="w-[5rem] h-[5rem] object-cover object-top"
+                  src="/img/k1.png"
+                  alt="Product"
+                  className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-md"
                 />
-                <div className="space-y-2 ml-5">
-                  <p className="font-semibold">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing
+
+                {/* Product Details */}
+                <div className="mt-3 sm:mt-0 space-y-2 w-full">
+                  <p className="font-semibold text-center sm:text-left">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   </p>
-                  <p className="space-x-5 opacity-50 font-semibold text-xs">
-                    <span>Color : Pink</span>
-                    <span>Size : M</span>
+                  <p className="text-gray-500 text-sm text-center sm:text-left">
+                    <span className="mr-2">Color: Pink</span> | <span>Size: M</span>
                   </p>
-                  <p>Seller: Monica Geller</p>
+                  <p className="text-center sm:text-left">Seller: Monica Geller</p>
                 </div>
               </div>
-            </Grid>
-            <Grid item>
-              <Box sx={{ color: deepPurple[500] }}>
-                <StarBorderIcon
-                  sx={{ fontSize: "2rem" }}
-                  className="px-2 text-5xl"
-                />
-                <span>Rate & Review Product</span>
+
+              {/* Rate & Review Section */}
+              <Box
+                className="mt-4 flex justify-center sm:justify-end items-center text-deepPurple-500"
+              >
+                <StarBorderIcon sx={{ fontSize: "2rem", color: deepPurple[500] }} />
+                <span className="ml-2 text-sm sm:text-base">Rate & Review Product</span>
               </Box>
             </Grid>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+          ))}
+        </Grid>
+      </div>
+      <Footer />
+    </>
   );
 };
 

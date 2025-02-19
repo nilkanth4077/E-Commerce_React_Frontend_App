@@ -15,24 +15,22 @@ const Order = () => {
   return (
     <>
       <Navigation />
-      <div className="px-5 lg:px-20 my-6">
-        <Grid container sx={{ justifyContent: "space-between" }}>
-          <Grid item xs={2.5}>
-            <div className="h-auto shadow-lg bg-white p-5 sticky top-5">
+      <div className="px-4 sm:px-6 lg:px-20 my-6">
+        <Grid container spacing={4}>
+          {/* Filters Section */}
+          <Grid item xs={12} md={3} lg={2.5}>
+            <div className="h-auto shadow-lg bg-white p-5 rounded-md sticky top-5">
               <h1 className="font-bold text-lg">Filter</h1>
-              <div className="space-y-4 mt-10">
-                <h1 className="font-semibold">ORDER STATUS</h1>
+              <div className="space-y-4 mt-5">
+                <h1 className="font-semibold text-sm sm:text-base">ORDER STATUS</h1>
                 {orderStatus.map((option) => (
-                  <div className="flex items-center">
+                  <div key={option.value} className="flex items-center">
                     <input
                       type="checkbox"
-                      defaultValue={option.value}
-                      className="h-4 w-4 border-grey-300 text-indigo-600 focud:ring-indigo:500"
+                      value={option.value}
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
-                    <label
-                      htmlFor={option.value}
-                      className="ml-3 text-sm text-gray-600"
-                    >
+                    <label htmlFor={option.value} className="ml-2 text-sm text-gray-600">
                       {option.label}
                     </label>
                   </div>
@@ -40,10 +38,14 @@ const Order = () => {
               </div>
             </div>
           </Grid>
-          <Grid item xs={9} className="space-y-5">
-            {[1, 1, 1, 1, 1].map((item) => (
-              <OrderCard />
-            ))}
+
+          {/* Orders List */}
+          <Grid item xs={12} md={9} lg={9.5}>
+            <div className="space-y-5">
+              {[1, 1, 1, 1, 1].map((_, index) => (
+                <OrderCard key={index} />
+              ))}
+            </div>
           </Grid>
         </Grid>
       </div>

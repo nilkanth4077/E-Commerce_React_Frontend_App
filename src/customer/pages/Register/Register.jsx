@@ -47,143 +47,103 @@ export default function Register() {
     return (
         <>
             <Navigation />
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                <div className="w-full">
-                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+            <div className="flex items-center justify-center px-4 lg:px-8">
+                <div className="w-full max-w-3xl bg-white p-6 shadow-md rounded-md">
+                    <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900">
                         Sign up your account
                     </h2>
-                </div>
 
-                <div className="mt-10 w-full">
-                    <form
-                        onSubmit={handleSubmit}
-                        action="#"
-                        method="POST"
-                        className="space-y-6"
-                    >
-                        <div className="grid grid-cols-3 gap-4">
+                    <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label
-                                    htmlFor="firstName"
-                                    className="block text-sm/6 font-medium text-gray-900 text-left"
-                                >
+                                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
                                     First Name
                                 </label>
-                                <div className="mt-2">
-                                    <input
-                                        id="firstName"
-                                        name="firstName"
-                                        type="text"
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="name"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
+                                <input
+                                    id="firstName"
+                                    name="firstName"
+                                    type="text"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
+                                    required
+                                    className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm/6"
+                                />
                             </div>
 
                             <div>
-                                <label
-                                    htmlFor="lastName"
-                                    className="block text-sm/6 font-medium text-gray-900 text-left"
-                                >
+                                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
                                     Last Name
                                 </label>
-                                <div className="mt-2">
-                                    <input
-                                        id="lastName"
-                                        name="lastName"
-                                        type="text"
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="name"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
+                                <input
+                                    id="lastName"
+                                    name="lastName"
+                                    type="text"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    required
+                                    className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm/6"
+                                />
                             </div>
-
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm/6 font-medium text-gray-900 text-left"
-                                >
-                                    Email address
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label
-                                    htmlFor="password"
-                                    className="block text-sm/6 font-medium text-gray-900 text-left"
-                                >
-                                    Password
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        id="password"
-                                        name="password"
-                                        type="password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="password"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label
-                                    htmlFor="mobile"
-                                    className="block text-sm/6 font-medium text-gray-900 text-left"
-                                >
-                                    Mobile No
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        id="mobile"
-                                        name="mobile"
-                                        type="tel"
-                                        value={formData.mobile}
-                                        onChange={handleChange}
-                                        required
-                                        autoComplete="tel"
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
                         </div>
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email address
+                            </label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm/6"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm/6"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
+                                Mobile No
+                            </label>
+                            <input
+                                id="mobile"
+                                name="mobile"
+                                type="tel"
+                                value={formData.mobile}
+                                onChange={handleChange}
+                                required
+                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm/6"
+                            />
+                        </div>
+
                         <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="w-full rounded-md bg-primary px-4 py-2 text-white font-semibold shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 sm:text-sm"
                             >
                                 Register
                             </button>
                         </div>
                     </form>
 
-                    <p className="mt-10 text-center text-sm/6 text-gray-500">
+                    <p className="mt-6 text-center text-sm text-gray-500">
                         Already a member?{" "}
-                        <a
-                            href="/login"
-                            className="font-semibold text-indigo-600 hover:text-indigo-500"
-                        >
+                        <a href="/login" className="font-semibold text-primary hover:text-secondary">
                             Login Here
                         </a>
                     </p>
