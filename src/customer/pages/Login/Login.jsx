@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../../../customer/components/Navigation/Navigation";
+import Footer from "../../../customer/components/Footer/Footer";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -145,6 +146,7 @@ export default function Login() {
                     </p>
                 </div>
             </div>
+            <Footer />
         </>
     );
 }

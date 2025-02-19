@@ -1,4 +1,5 @@
 import Navigation from "../../../customer/components/Navigation/Navigation";
+import Footer from "../../../customer/components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -47,8 +48,8 @@ export default function Register() {
     return (
         <>
             <Navigation />
-            <div className="flex items-center justify-center px-4 lg:px-8">
-                <div className="w-full max-w-3xl bg-white p-6 shadow-md rounded-md">
+            <div className="flex items-center justify-center px-4 lg:px-8 py-4">
+                <div className="w-full max-w-3xl bg-white p-6 drop-shadow rounded-md">
                     <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900">
                         Sign up your account
                     </h2>
@@ -149,6 +150,7 @@ export default function Register() {
                     </p>
                 </div>
             </div>
+            <Footer />
         </>
     );
 }
