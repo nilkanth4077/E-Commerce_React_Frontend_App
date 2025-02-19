@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Products from "./customer/components/Products/Products";
 import AdminDashboard from "./admin/AdminDashboard/AdminDashboard";
 import ProductDetails from "./customer/components/ProductDetails/ProductDetails";
-import Cart from "./customer/components/Cart/CartItem";
+import Cart from "./customer/components/Cart/Cart";
 import Checkout from "./customer/components/Checkout/Checkout";
 import Order from "./customer/components/Order/Order";
 import OrderDetails from "./customer/components/Order/OrderDetails";
